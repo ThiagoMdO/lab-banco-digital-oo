@@ -4,10 +4,8 @@ import com.dio.challenge.lab_banco_digital_oo.interfaces.IAccount;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.business.Bank;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.typeAccount.Account;
 import com.dio.challenge.lab_banco_digital_oo.model.reference.ClientBankPersist;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.dio.challenge.lab_banco_digital_oo.model.responses.AccountResponse;
+import lombok.*;
 
 @Getter
 @Setter
@@ -27,14 +25,10 @@ public abstract class AccountDTO implements IAccount {
 
     private Double balance;
 
-    public static <T extends AccountDTO> T convertTypeAccountDTO( T accountDTO, Account account){
-         accountDTO.setId(accountDTO.getId());
-         accountDTO.setClient(account.getClient());
-         accountDTO.setTypeAccount(account.getTypeAccount());
-         accountDTO.setAgency(account.getAgency());
-         accountDTO.setNumberAccount(account.getNumberAccount());
-         accountDTO.setBalance(account.getBalance());
-         return accountDTO;
+    private Bank bank;
+
+    public static AccountResponse convertTypeAccountDTO(Account account){
+         return new AccountResponse(account);
     }
 
     @Override
