@@ -4,7 +4,6 @@ import com.dio.challenge.lab_banco_digital_oo.model.dto.typeAccount.AccountDTO;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.typeAccount.Account;
 import com.dio.challenge.lab_banco_digital_oo.model.reference.ClientBankPersist;
 import com.dio.challenge.lab_banco_digital_oo.model.requests.AccountRequest;
-import com.dio.challenge.lab_banco_digital_oo.model.requests.AccountRequestToUpdate;
 import lombok.ToString;
 
 @ToString

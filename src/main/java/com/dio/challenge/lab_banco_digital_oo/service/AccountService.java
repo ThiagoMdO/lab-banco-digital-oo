@@ -38,7 +38,7 @@ public class AccountService {
     }
 
     public AccountResponse getAccountById(Long id){
-        return checkAccountInDBAndReturnItem(id);
+        return new AccountResponse(checkAccountInDBAndReturnItem(id));
     }
 
     public List<AccountResponse> getAllAccountsByOne(Long id){
@@ -58,11 +58,23 @@ public class AccountService {
         return new AccountResponse(result);
     }
 
+    public AccountResponse update(Long id, AccountRequestToUpdate typeAccount){
+        return buildUpdate(id, typeAccount);
+    }
 
-    public void update(Long id, AccountRequestToUpdate typeAccount){
-        AccountResponse response = getAccountById(id);
-        response.setTypeAccount(typeAccount.getTypeAccount());
-        System.out.println(response);
+    public void delete(Long id){
+        Account account = checkAccountInDBAndReturnItem(id);
+        accountRepository.delete(account);
+    }
+
+    private AccountResponse buildUpdate(Long id, AccountRequestToUpdate typeAccount){
+        Account account = checkAccountInDBAndReturnItem(id);
+
+        account.setTypeAccount(typeAccount.getTypeAccount());
+
+        accountRepository.save(account);
+
+        return new AccountResponse(account);
     }
 
     private void checkListEmpty(List<Account> list){
@@ -90,16 +102,12 @@ public class AccountService {
         return bankRepository.findById(idBank).orElseThrow(BankNotFoundException::new);
     }
 
-    private ClientBank getClientBank(Long id_Client){
-        return clientRepository.findById(id_Client).orElseThrow(ClientNotFoundException::new);
+    private ClientBank getClientBank(Long idClient){
+        return clientRepository.findById(idClient).orElseThrow(ClientNotFoundException::new);
     }
 
-    private AccountResponse checkAccountInDBAndReturnItem(Long id){
-        Account response = accountRepository.findById(id).orElseThrow(NoFoundAccountException::new);
-        return new AccountResponse(response);
+    private Account checkAccountInDBAndReturnItem(Long id){
+        return accountRepository.findById(id).orElseThrow(NoFoundAccountException::new);
     }
-
-    //Olhar abstração do tipo Generico
-    //Ollhar persistir entitys com atributos como outras classes, fazer com que apenas um valor seja armazenado
 
 }
