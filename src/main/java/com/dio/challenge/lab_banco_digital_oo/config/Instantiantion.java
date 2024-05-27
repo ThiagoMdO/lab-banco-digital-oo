@@ -1,5 +1,6 @@
 package com.dio.challenge.lab_banco_digital_oo.config;
 
+import com.dio.challenge.lab_banco_digital_oo.enuns.StatusAccount;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.business.Bank;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.typeAccount.Account;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.users.ClientBank;
@@ -82,9 +83,10 @@ public class Instantiantion implements CommandLineRunner {
             .id(1L)
             .client(clientBank1)
             .typeAccount("CurrentAccount")
+            .statusAccount(StatusAccount.ACTIVE)
             .agency("7789")
             .numberAccount("00123")
-            .balance(301.1)
+            .balance(300.0)
             .bank(bank1)
             .build();
 
@@ -92,9 +94,10 @@ public class Instantiantion implements CommandLineRunner {
             .id(2L)
             .client(clientBank2)
             .typeAccount("SavingsAccount")
+            .statusAccount(StatusAccount.ACTIVE)
             .agency("7789")
             .numberAccount("00129")
-            .balance(98201.1)
+            .balance(100.0)
             .bank(bank1)
             .build();
 
@@ -102,16 +105,14 @@ public class Instantiantion implements CommandLineRunner {
             .id(3L)
             .client(clientBank2)
             .typeAccount("CurrentAccount")
+            .statusAccount(StatusAccount.CANCELED)
             .agency("7789")
             .numberAccount("00228")
-            .balance(1000.1)
+            .balance(100.0)
             .bank(bank1)
             .build();
 
         accountRepository.saveAll(Arrays.asList(acCc1, acCc2, acCc3));
-
-
-
 
     }
 }

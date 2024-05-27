@@ -35,4 +35,9 @@ public class Bank {
         if (account.getBalance() < amount)
             throw new NoFundsException();
     }
+
+    public static void checkBalanceAccountToWithdrawForTax(AccountDTO account, Double amount, Double tax){
+        if (account.getBalance() < amount + amount * tax)
+            throw new NoFundsException();
+    }
 }

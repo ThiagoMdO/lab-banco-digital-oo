@@ -54,9 +54,9 @@ public class AccountController {
         return ResponseEntity.ok().body(response);
     }
 
-    @DeleteMapping("/{id}")
-    ResponseEntity<Void> deleteAccount(@PathVariable Long id){
-        accountService.delete(id);
+    @PutMapping("/cancel/{id}")
+    ResponseEntity<Void> cancelAccount(@PathVariable Long id){
+        accountService.cancel(id);
         return ResponseEntity.noContent().build();
     }
 }

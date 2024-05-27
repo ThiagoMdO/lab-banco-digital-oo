@@ -1,5 +1,6 @@
 package com.dio.challenge.lab_banco_digital_oo.model.dto.typeAccount;
 
+import com.dio.challenge.lab_banco_digital_oo.enuns.StatusAccount;
 import com.dio.challenge.lab_banco_digital_oo.interfaces.IAccount;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.business.Bank;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.typeAccount.Account;
@@ -19,6 +20,8 @@ public abstract class AccountDTO implements IAccount {
 
     private String typeAccount;
 
+    private StatusAccount statusAccount;
+
     private String agency;
 
     private String numberAccount;
@@ -31,6 +34,17 @@ public abstract class AccountDTO implements IAccount {
          return new AccountResponse(account);
     }
 
+    protected AccountDTO(Account account){
+        id = account.getId();
+        client = new ClientBankPersist(account.getClient());
+        typeAccount = account.getTypeAccount();
+        statusAccount = account.getStatusAccount();
+        agency = account.getAgency();
+        numberAccount = account.getNumberAccount();
+        balance = account.getBalance();
+        bank = account.getBank();
+    }
+    
     @Override
     public void withdraw(Double valueToWithdraw) {
         Bank.checkBalanceAccountToWithdraw(this, valueToWithdraw);
@@ -46,6 +60,8 @@ public abstract class AccountDTO implements IAccount {
     public void transferToAnotherAccount(Double amountToTransfer, AccountDTO targetAccount) {
 
     }
+
+
 //    private AccountDTO(Builder builder) {
 //        this.id = builder.id;
 //        this.client = builder.client;

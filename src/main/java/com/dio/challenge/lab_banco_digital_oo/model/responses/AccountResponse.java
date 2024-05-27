@@ -13,6 +13,7 @@ public class AccountResponse extends AccountDTO {
         setId(account.getId());
         setClient(new ClientBankPersist(account.getClient()));
         setTypeAccount(account.getTypeAccount());
+        setStatusAccount(account.getStatusAccount());
         setAgency(account.getAgency());
         setNumberAccount(account.getNumberAccount());
         setBalance(account.getBalance());

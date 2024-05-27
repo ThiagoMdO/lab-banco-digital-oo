@@ -1,5 +1,6 @@
 package com.dio.challenge.lab_banco_digital_oo.model.entities.typeAccount;
 
+import com.dio.challenge.lab_banco_digital_oo.enuns.StatusAccount;
 import com.dio.challenge.lab_banco_digital_oo.model.dto.typeAccount.AccountDTO;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.business.Bank;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.users.ClientBank;
@@ -30,6 +31,9 @@ public class Account{
     @NotEmpty
     private String typeAccount;
 
+    @Enumerated(EnumType.STRING)
+    private StatusAccount statusAccount;
+
     @NotEmpty
     private String agency;
 
@@ -45,6 +49,7 @@ public class Account{
     public Account(AccountDTO accountDTO, ClientBank clientBank, Bank bankDB){
         id = accountDTO.getId();
         client = clientBank;
+        statusAccount = StatusAccount.ACTIVE;
         typeAccount = accountDTO.getTypeAccount();
         agency = accountDTO.getAgency();
         numberAccount = accountDTO.getNumberAccount();

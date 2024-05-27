@@ -1,12 +1,16 @@
 package com.dio.challenge.lab_banco_digital_oo.service;
 
+import com.dio.challenge.lab_banco_digital_oo.enuns.StatusAccount;
 import com.dio.challenge.lab_banco_digital_oo.exception.exceptions.*;
 import com.dio.challenge.lab_banco_digital_oo.model.dto.typeAccount.AccountDTO;
+import com.dio.challenge.lab_banco_digital_oo.model.dto.typeAccount.CurrentAccount;
+import com.dio.challenge.lab_banco_digital_oo.model.dto.typeAccount.SavingsAccount;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.business.Bank;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.typeAccount.Account;
 import com.dio.challenge.lab_banco_digital_oo.model.entities.users.ClientBank;
 import com.dio.challenge.lab_banco_digital_oo.model.requests.AccountRequest;
 import com.dio.challenge.lab_banco_digital_oo.model.requests.AccountRequestToUpdate;
+import com.dio.challenge.lab_banco_digital_oo.model.requests.AccountRequestWithdrawAndDeposit;
 import com.dio.challenge.lab_banco_digital_oo.model.responses.AccountResponse;
 import com.dio.challenge.lab_banco_digital_oo.repository.AccountRepository;
 import com.dio.challenge.lab_banco_digital_oo.repository.BankRepository;
@@ -27,6 +31,26 @@ public class AccountService {
 
     @Autowired
     ClientRepository clientRepository;
+
+    public AccountResponse withdraw(Long id, AccountRequestWithdrawAndDeposit amount){
+        Account account = checkAccountInDBAndReturnItem(id);
+
+        AccountDTO accountDTO2 = switch (account.getTypeAccount()) {
+            case "SavingsAccount" -> new SavingsAccount(account);
+            case "CurrentAccount" -> new CurrentAccount(account);
+            default -> throw new TypeAccountIsNotAvailableException();
+        };
+
+        accountDTO2.withdraw(amount.getAmount());
+
+        account = new Account(accountDTO2,
+            getClientBank(accountDTO2.getClient().getId()),
+            getBankById(accountDTO2.getBank().getId()));
+
+        accountRepository.save(account);
+
+        return new AccountResponse(account);
+    }
 
     public List<AccountResponse> getAll(){
         List<Account> list = accountRepository.findAll();
@@ -62,9 +86,10 @@ public class AccountService {
         return buildUpdate(id, typeAccount);
     }
 
-    public void delete(Long id){
+    public void cancel(Long id){
         Account account = checkAccountInDBAndReturnItem(id);
-        accountRepository.delete(account);
+        account.setStatusAccount(StatusAccount.CANCELED);
+        accountRepository.save(account);
     }
 
     private AccountResponse buildUpdate(Long id, AccountRequestToUpdate typeAccount){
